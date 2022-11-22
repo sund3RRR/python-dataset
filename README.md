@@ -3,6 +3,7 @@ A simple pyqt6 visualization of mathstat analysis (regression + correlation).
 ## Setting up virtual environment
 ```
 git clone https://github.com/kabachoke/python-dataset/
+cd python-dataset
 python -m venv venv
 source ./venv/bin/activate
 pip install pip --upgrade

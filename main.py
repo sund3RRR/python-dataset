@@ -1,10 +1,10 @@
-import sys, csv, pandas, seaborn, matplotlib
-from PyQt6 import QtCore, QtGui, QtWidgets
+import sys, pandas, seaborn
+from PyQt6 import QtWidgets
 from matplotlib.backends.backend_qtagg import FigureCanvasQTAgg
-from matplotlib.figure import Figure
 
-from dataset import Dataset
-from form import Ui_MainWindow
+from scripts.dataset import Dataset
+from form.form import Ui_MainWindow
+
 
 def seaborndisplot(data):
     return seaborn.displot(data, kind = 'kde', height=3)
@@ -13,10 +13,12 @@ def seaborndisplot(data):
 def seabornregplot(data):
     return seaborn.regplot(x = 'Energy', y = 'Danceability', data = data)
 
+
 def read_csv(file_name :str) -> list[list]:
     df = pandas.read_csv(file_name, delimiter=',', encoding = "ISO-8859-1")
     data = [[row[col] for col in df.columns] for row in df.to_dict('records')]
     return data
+
 
 class MplCanvas(FigureCanvasQTAgg):
     def __init__(self, plot):
@@ -24,14 +26,15 @@ class MplCanvas(FigureCanvasQTAgg):
         self.axes = plot.axes
         super().__init__(self.fig)
 
+        
 class App(Ui_MainWindow):
     def __init__(self, MainWindow) -> None:
         super().__init__()
         self.setupUi(MainWindow)
         self.dataset_table.setSizePolicy(QtWidgets.QSizePolicy.Policy.Expanding, QtWidgets.QSizePolicy.Policy.Expanding)
-        data = read_csv("top50.csv")
+        data = read_csv("data/top50.csv")
         self.set_dataset_table_data(data)
-        self.dataset = Dataset("top50.csv")
+        self.dataset = Dataset("data/top50.csv")
 
         self.load_button.clicked.connect(self.load)
         
